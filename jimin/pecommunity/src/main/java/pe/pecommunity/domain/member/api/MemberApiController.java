@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pe.pecommunity.domain.member.application.MemberService;
 import pe.pecommunity.domain.member.domain.Member;
-import pe.pecommunity.domain.member.dto.SignInRequestDTO;
+import pe.pecommunity.domain.member.dto.SignInRequestDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class MemberApiController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    private ResponseEntity<String> signIn(@RequestBody @Valid SignInRequestDTO request) {
+    private ResponseEntity<String> signIn(@RequestBody @Valid SignInRequestDto request) {
         Member member = new Member();
         member.setMemberId(request.getMemberId());
         member.setNickname(request.getNickname());

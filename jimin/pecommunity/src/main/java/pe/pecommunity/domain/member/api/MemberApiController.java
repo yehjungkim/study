@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pe.pecommunity.domain.member.application.MemberService;
+import pe.pecommunity.domain.member.domain.Authority;
 import pe.pecommunity.domain.member.domain.Member;
 import pe.pecommunity.domain.member.dto.LoginRequestDto;
 import pe.pecommunity.domain.member.dto.SignInRequestDto;
@@ -40,6 +41,7 @@ public class MemberApiController {
         member.setNickname(request.getNickname());
         member.setPassword(request.getPassword());
         member.setEmail(request.getEmail());
+        member.setAuthority(Authority.MEMBER); // 권한 설정
 
         try {
             memberService.join(member);

@@ -1,6 +1,7 @@
 package pe.pecommunity.domain.member.dao;
 
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,21 +21,29 @@ public class MemberRepository {
         return em.find(Member.class, id);
     }
 
-    public List<Member> findByMemberId(String memberId) {
-        return em.createQuery("select m from Member m where m.memberId = :memberId", Member.class)
+    public List<Member> findAll() {
+        return em.createQuery("select m from Member m", Member.class)
+                .getResultList();
+    }
+
+    public Optional<Member> findByMemberId(String memberId) {
+        List<Member> member = em.createQuery("select m from Member m where m.memberId = :memberId", Member.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
+        return member.stream().findAny();
     }
 
-    public List<Member> findByNickname(String nickname) {
-        return em.createQuery("select m from Member m where m.nickname = :nickname", Member.class)
+    public Optional<Member> findByNickname(String nickname) {
+        List<Member> member =  em.createQuery("select m from Member m where m.nickname = :nickname", Member.class)
                 .setParameter("nickname", nickname)
                 .getResultList();
+        return member.stream().findAny();
     }
 
-    public List<Member> findByEmail(String email) {
-        return em.createQuery("select m from Member m where m.email = :email", Member.class)
+    public Optional<Member> findByEmail(String email) {
+        List<Member> member =  em.createQuery("select m from Member m where m.email = :email", Member.class)
                 .setParameter("email", email)
                 .getResultList();
+        return member.stream().findAny();
     }
 }

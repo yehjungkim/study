@@ -1,6 +1,7 @@
 package pe.pecommunity.domain.member.application;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,19 +30,35 @@ public class MemberService {
     }
 
     private void validateDuplicateMember(Member member) {
-        List<Member> findMembers = memberRepository.findByMemberId(member.getMemberId());
-        if(!findMembers.isEmpty()) {
+        if(checkMemberId(member.getMemberId())) {
             throw new IllegalStateException(ErrorMessage.MEMBER_ID_ALREADY_EXIST);
         }
 
-        findMembers = memberRepository.findByNickname(member.getNickname());
-        if(!findMembers.isEmpty()) {
+        if(checkNickname(member.getNickname())) {
             throw new IllegalStateException(ErrorMessage.NICKNAME_ALREADY_EXIST);
         }
 
-        findMembers = memberRepository.findByEmail(member.getEmail());
-        if(!findMembers.isEmpty()) {
+        if(checkEmail(member.getEmail())) {
             throw new IllegalStateException(ErrorMessage.EMAIL_ALREADY_EXIST);
         }
+    }
+
+    public boolean checkMemberId(String memberId) {
+        Optional<Member> findMember = memberRepository.findByMemberId(memberId);
+        return findMember.isPresent();
+    }
+
+    private boolean checkNickname(String nickname) {
+        Optional<Member> findMember = memberRepository.findByNickname(nickname);
+        return findMember.isPresent();
+    }
+
+    private boolean checkEmail(String email) {
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        return findMember.isPresent();
+    }
+
+    public List<Member> findMembers() {
+        return memberRepository.findAll();
     }
 }

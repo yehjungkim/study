@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.pecommunity.domain.member.dao.MemberRepository;
 import pe.pecommunity.domain.member.domain.Member;
+import pe.pecommunity.domain.member.dto.LoginRequestDto;
 import pe.pecommunity.global.error.ErrorMessage;
 
 
@@ -27,6 +28,21 @@ public class MemberService {
         validateDuplicateMember(member);
         memberRepository.save(member);
         return member.getId();
+    }
+
+    /**
+     * 로그인
+     */
+
+    public Long login(LoginRequestDto member) {
+        Member loginMember = memberRepository.findByMemberId(member.getMemberId())
+                .orElseThrow(() -> new IllegalStateException(ErrorMessage.MEMBER_ID_NOT_EXIST));
+
+        if(!loginMember.getPassword().equals(member.getPassword())) {
+            throw new IllegalStateException(ErrorMessage.WRONG_PASSWORD);
+        }
+
+        return loginMember.getId();
     }
 
     private void validateDuplicateMember(Member member) {

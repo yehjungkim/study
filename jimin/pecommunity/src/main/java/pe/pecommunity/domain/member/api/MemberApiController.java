@@ -36,19 +36,14 @@ public class MemberApiController {
             return new ResponseEntity<>("fail: " + errorMessage, HttpStatus.BAD_REQUEST);
         }
 
-        Member member = new Member();
-        member.setMemberId(request.getMemberId());
-        member.setNickname(request.getNickname());
-        member.setPassword(request.getPassword());
-        member.setEmail(request.getEmail());
-        member.setAuthority(Authority.MEMBER); // 권한 설정
-
         try {
+            Member member = request.toEntity();
             memberService.join(member);
         } catch (IllegalStateException e) {
             log.info(e.getMessage());
             return new ResponseEntity<>("fail: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+
         return new ResponseEntity<>("success", HttpStatus.CREATED);
     }
 

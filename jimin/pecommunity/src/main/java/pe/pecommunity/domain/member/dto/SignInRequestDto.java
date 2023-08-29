@@ -4,9 +4,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import pe.pecommunity.domain.member.domain.Member;
 
-@Data
+@Getter
 public class SignInRequestDto {
     @NotBlank(message = "회원 아이디는 필수 값입니다.")
     @Size(min = 1, max = 10, message = "아이디는 10자 이내여야 합니다.")
@@ -25,4 +26,13 @@ public class SignInRequestDto {
 
     @Email(message = "이메일 형식을 맞춰주세요")
     private String email;
+
+    public Member toEntity() {
+        return Member.ByMemberBuilder()
+                .memberId(memberId)
+                .nickname(nickname)
+                .password(password)
+                .email(email)
+                .build();
+    }
 }

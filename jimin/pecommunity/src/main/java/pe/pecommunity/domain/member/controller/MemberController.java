@@ -31,11 +31,12 @@ public class MemberController {
             return "members/createMemberForm";
         }
 
-        Member member = new Member();
-        member.setMemberId(form.getMemberId());
-        member.setNickname(form.getNickname());
-        member.setPassword(form.getPassword());
-        member.setEmail(form.getEmail());
+        Member member = Member.ByMemberBuilder()
+                .memberId(form.getMemberId())
+                .nickname(form.getNickname())
+                .password(form.getPassword())
+                .email(form.getEmail())
+                .build();
 
         memberService.join(member);
 

@@ -14,7 +14,7 @@ import pe.pecommunity.global.error.ErrorMessage;
 
 @Slf4j
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -33,7 +33,6 @@ public class MemberService {
     /**
      * 로그인
      */
-
     public Long login(LoginRequestDto member) {
         Member loginMember = memberRepository.findByMemberId(member.getMemberId())
                 .orElseThrow(() -> new IllegalStateException(ErrorMessage.MEMBER_ID_NOT_EXIST));

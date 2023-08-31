@@ -28,7 +28,7 @@ public class SignInRequestDto {
     private String email;
 
     public Member toEntity() {
-        return Member.ByMemberBuilder()
+        return Member.createMemberBuilder()
                 .memberId(memberId)
                 .nickname(nickname)
                 .password(password)

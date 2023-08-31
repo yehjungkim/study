@@ -31,7 +31,7 @@ public class MemberController {
             return "members/createMemberForm";
         }
 
-        Member member = Member.ByMemberBuilder()
+        Member member = Member.createMemberBuilder()
                 .memberId(form.getMemberId())
                 .nickname(form.getNickname())
                 .password(form.getPassword())

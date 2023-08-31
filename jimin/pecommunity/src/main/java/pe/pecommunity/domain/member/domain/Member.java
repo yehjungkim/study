@@ -41,7 +41,7 @@ public class Member {
 
     private LocalDateTime dormantConversionDate;
 
-    @Builder(builderMethodName = "ByMemberBuilder")
+    @Builder(builderMethodName = "createMemberBuilder")
     public Member(String memberId, String nickname, String password, String email) {
         this.memberId = memberId;
         this.nickname = nickname;

@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pe.pecommunity.domain.member.application.MemberService;
-import pe.pecommunity.domain.member.domain.Authority;
 import pe.pecommunity.domain.member.domain.Member;
 import pe.pecommunity.domain.member.dto.LoginRequestDto;
 import pe.pecommunity.domain.member.dto.SignInRequestDto;
+import pe.pecommunity.global.common.response.ApiResponse;
+import pe.pecommunity.global.common.response.ResponseUtils;
+import pe.pecommunity.global.error.ErrorMessage;
 
 @Slf4j
 @RestController
@@ -28,47 +31,46 @@ public class MemberApiController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    private ResponseEntity<String> signIn(@RequestBody @Valid SignInRequestDto request, BindingResult bindingResult) {
+    @ResponseStatus(HttpStatus.CREATED)
+    private ApiResponse<?> signIn(@RequestBody @Valid SignInRequestDto request, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            log.info("검증 오류 발생 errors={}", bindingResult);
-            String errorMessage = getErrorMessage(bindingResult);
-            return new ResponseEntity<>("fail: " + errorMessage, HttpStatus.BAD_REQUEST);
+            return ResponseUtils.error(null, getErrorMessage(bindingResult));
         }
 
         try {
             Member member = request.toEntity();
             memberService.join(member);
         } catch (IllegalStateException e) {
-            log.info(e.getMessage());
-            return new ResponseEntity<>("fail: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseUtils.failure(null, e.getMessage());
         }
 
-        return new ResponseEntity<>("success", HttpStatus.CREATED);
+        return ResponseUtils.success(null, "회원가입 성공");
     }
 
     @GetMapping("/join/{memberId}")
-    private ResponseEntity<String> checkMemberId(@PathVariable String memberId) {
-        String result = memberService.checkMemberId(memberId) ? "fail: 이미 존재하는 아이디입니다." : "success";
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    private ApiResponse<?> checkMemberId(@PathVariable String memberId) {
+        if(memberService.checkMemberId(memberId)) {
+            return ResponseUtils.failure(null, ErrorMessage.MEMBER_ID_ALREADY_EXIST);
+        }
+        return ResponseUtils.success(null, "사용가능한 아이디입니다.");
     }
 
     @PostMapping("/login")
-    private ResponseEntity<String> login(@RequestBody @Valid LoginRequestDto request, BindingResult bindingResult) {
+    @ResponseStatus(HttpStatus.OK)
+    private ApiResponse<?> login(@RequestBody @Valid LoginRequestDto request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            log.info("검증 오류 발생 errors={}", bindingResult);
-            String errorMessage = getErrorMessage(bindingResult);
-            return new ResponseEntity<>("fail: " + errorMessage, HttpStatus.BAD_REQUEST);
+            return ResponseUtils.error(null, getErrorMessage(bindingResult));
         }
 
         try {
             memberService.login(request);
         } catch (IllegalStateException e) {
-            log.info(e.getMessage());
-            return new ResponseEntity<>("fail: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseUtils.failure(null, e.getMessage());
         }
 
-        return new ResponseEntity<>("success", HttpStatus.OK);
+        return ResponseUtils.success(null, "로그인 성공");
     }
 
     private String getErrorMessage(BindingResult bindingResult) {

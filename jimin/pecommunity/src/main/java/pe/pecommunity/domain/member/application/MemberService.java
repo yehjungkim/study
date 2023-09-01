@@ -1,7 +1,7 @@
 package pe.pecommunity.domain.member.application;
 
-import java.util.List;
-import java.util.Optional;
+import static pe.pecommunity.global.error.ErrorCode.*;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.pecommunity.domain.member.dao.MemberRepository;
 import pe.pecommunity.domain.member.domain.Member;
 import pe.pecommunity.domain.member.dto.LoginRequestDto;
-import pe.pecommunity.global.error.ErrorMessage;
+import pe.pecommunity.global.error.exception.BaseException;
 
 
 @Slf4j
@@ -25,7 +25,16 @@ public class MemberService {
      */
     @Transactional
     public Long join(Member member) {
-        validateDuplicateMember(member);
+        checkMemberId(member.getMemberId());
+
+        if(memberRepository.findByMemberId(member.getNickname()).isPresent()) {
+            throw new BaseException(NICKNAME_ALREADY_EXIST);
+        }
+
+        if(memberRepository.findByMemberId(member.getEmail()).isPresent()) {
+            throw new BaseException(EMAIL_ALREADY_EXIST);
+        }
+
         memberRepository.save(member);
         return member.getId();
     }
@@ -35,45 +44,21 @@ public class MemberService {
      */
     public Long login(LoginRequestDto member) {
         Member loginMember = memberRepository.findByMemberId(member.getMemberId())
-                .orElseThrow(() -> new IllegalStateException(ErrorMessage.MEMBER_ID_NOT_EXIST));
+                .orElseThrow(() -> new BaseException(MEMBER_ID_NOT_EXIST));
 
         if(!loginMember.getPassword().equals(member.getPassword())) {
-            throw new IllegalStateException(ErrorMessage.WRONG_PASSWORD);
+            throw new BaseException(WRONG_PASSWORD);
         }
 
         return loginMember.getId();
     }
 
-    private void validateDuplicateMember(Member member) {
-        if(checkMemberId(member.getMemberId())) {
-            throw new IllegalStateException(ErrorMessage.MEMBER_ID_ALREADY_EXIST);
+    /**
+     * 아이디 중복 확인
+     */
+    public void checkMemberId(String memberId) {
+        if(memberRepository.findByMemberId(memberId).isPresent()) {
+            throw new BaseException(MEMBER_ID_ALREADY_EXIST);
         }
-
-        if(checkNickname(member.getNickname())) {
-            throw new IllegalStateException(ErrorMessage.NICKNAME_ALREADY_EXIST);
-        }
-
-        if(checkEmail(member.getEmail())) {
-            throw new IllegalStateException(ErrorMessage.EMAIL_ALREADY_EXIST);
-        }
-    }
-
-    public boolean checkMemberId(String memberId) {
-        Optional<Member> findMember = memberRepository.findByMemberId(memberId);
-        return findMember.isPresent();
-    }
-
-    private boolean checkNickname(String nickname) {
-        Optional<Member> findMember = memberRepository.findByNickname(nickname);
-        return findMember.isPresent();
-    }
-
-    private boolean checkEmail(String email) {
-        Optional<Member> findMember = memberRepository.findByEmail(email);
-        return findMember.isPresent();
-    }
-
-    public List<Member> findMembers() {
-        return memberRepository.findAll();
     }
 }

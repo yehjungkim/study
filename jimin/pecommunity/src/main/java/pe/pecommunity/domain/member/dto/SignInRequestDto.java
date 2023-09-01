@@ -10,12 +10,12 @@ import pe.pecommunity.domain.member.domain.Member;
 @Getter
 public class SignInRequestDto {
     @NotBlank(message = "회원 아이디는 필수 값입니다.")
-    @Size(min = 1, max = 10, message = "아이디는 10자 이내여야 합니다.")
+    @Size(max = 10, message = "아이디는 10자이내여야 합니다.")
     @Pattern(regexp="^[a-z|A-Z|0-9]*$", message = "아이디는 영문 또는 숫자로만 구성되어야 합니다.")
     private String memberId;
 
     @NotBlank(message = "닉네임은 필수 값입니다.")
-    @Size(min = 1, max = 10, message = "닉네임은 10자 이내여야 합니다.")
+    @Size(max = 10, message = "닉네임은 10자이내여야 합니다.")
     @Pattern(regexp="^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9]*$", message = "닉네임은 한글, 영문, 숫자로만 구성되어야 합니다.")
     private String nickname;
 

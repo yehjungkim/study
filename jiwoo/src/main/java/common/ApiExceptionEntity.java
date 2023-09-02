@@ -1,4 +1,4 @@
-package Common;
+package common;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @ToString
-public class ExceptionEntity {
+public class ApiExceptionEntity {
     private String errorCode;
     private String errorMessage;
 
     @Builder
-    public ExceptionEntity(HttpStatus status, String errorCode, String errorMessage){
+    public ApiExceptionEntity(HttpStatus status, String errorCode, String errorMessage){
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }

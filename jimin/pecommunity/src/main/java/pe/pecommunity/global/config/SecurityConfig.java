@@ -25,8 +25,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-
+        /**
+         * Form 로그인
+         */
         http.authorizeRequests()
             .antMatchers("/", "/members/new", "/members/login", "/resources/**").permitAll()
             .antMatchers("/login-test").hasRole(Role.ADMIN.name())
@@ -45,5 +46,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout().logoutUrl("/members/logout").logoutSuccessUrl("/"); // 로그아웃
 
         http.userDetailsService(userDetailsService);
+
+
+        /**
+         * REST API - JWT 추가
+         */
+//        http
+//            .httpBasic().disable() // 기본설정 미사용
+//            .csrf().disable() // csrf 보안 미사용
+//            .formLogin().disable()
+//            .authorizeRequests()
+//                .antMatchers("/", "member/join/**", "/member/login").permitAll()
+//                .antMatchers("/post/**").authenticated()
+//                .anyRequest().authenticated();
     }
 }

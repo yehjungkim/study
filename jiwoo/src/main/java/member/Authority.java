@@ -1,6 +1,4 @@
-package Member;
-
-import javax.persistence.Enumerated;
+package member;
 
 public enum Authority {
     ADMIN, MEMBER

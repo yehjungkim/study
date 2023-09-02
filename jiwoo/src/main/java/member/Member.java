@@ -1,9 +1,9 @@
-package Member;
+package member;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name="MEMBER", uniqueConstraints = {@UniqueConstraint(
         name = "ID_EMAIL_UNIQUE",
         columnNames = {"ID","EMAIL"}
@@ -50,23 +51,6 @@ public class Member {
 
     @Temporal(TemporalType.TIMESTAMP)
      private Date dormant_account_YMD;
-
-    public Member(String nickname, String id, String pw, String email) {
-        this.nickname = nickname;
-        this.id = id;
-        this.pw = pw;
-        this.email = email;
-    }
-
-    public Member createMember(SignUpRequestDto signUpDto) {
-        Member member = new Member();
-        member.setAuthority(Authority.MEMBER);
-        member.setNickname(signUpDto.getNickname());
-        member.setId(signUpDto.getId());
-        member.setPw(signUpDto.getPw());
-        member.setEmail(signUpDto.getEmail());
-        return member;
-    }
 
 }
 

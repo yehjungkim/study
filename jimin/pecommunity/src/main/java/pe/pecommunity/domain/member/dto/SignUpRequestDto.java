@@ -9,7 +9,7 @@ import lombok.Getter;
 import pe.pecommunity.domain.member.domain.Member;
 
 @Getter
-public class SignInRequestDto {
+public class SignUpRequestDto {
     @NotBlank(message = "회원 아이디는 필수 값입니다.")
     @Size(max = 10, message = "아이디는 10자이내여야 합니다.")
     @Pattern(regexp="^[a-z|A-Z|0-9]*$", message = "아이디는 영문 또는 숫자로만 구성되어야 합니다.")

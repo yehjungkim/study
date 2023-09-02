@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pe.pecommunity.domain.member.application.MemberService;
 import pe.pecommunity.domain.member.dto.LoginRequestDto;
-import pe.pecommunity.domain.member.dto.SignInRequestDto;
+import pe.pecommunity.domain.member.dto.SignUpRequestDto;
 import pe.pecommunity.global.common.response.ApiResponse;
 import pe.pecommunity.global.common.response.ResponseUtils;
 
@@ -32,7 +32,7 @@ public class MemberApiController {
     @Operation(summary = "회원 가입", description = "회원을 등록하는 api")
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    private ApiResponse<?> signUp(@RequestBody @Valid SignInRequestDto request) {
+    private ApiResponse<?> signUp(@RequestBody @Valid SignUpRequestDto request) {
         memberService.join(request.toEntity());
         return ResponseUtils.success("회원가입 성공");
     }
@@ -50,7 +50,7 @@ public class MemberApiController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     private ApiResponse<?> singIn(@RequestBody @Valid LoginRequestDto request) {
-        memberService.login(request);
+        memberService.login(request.getMemberId(), request.getPassword());
         return ResponseUtils.success("로그인 성공");
     }
 }

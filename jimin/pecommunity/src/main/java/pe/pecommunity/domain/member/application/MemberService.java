@@ -47,11 +47,11 @@ public class MemberService {
     /**
      * 로그인
      */
-    public Long login(LoginRequestDto member) {
-        Member loginMember = memberRepository.findByMemberId(member.getMemberId())
+    public Long login(String memberId, String password) {
+        Member loginMember = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new BaseException(MEMBER_ID_NOT_EXIST));
 
-        if(!passwordEncoder.matches(member.getPassword(), loginMember.getPassword())) {
+        if(!passwordEncoder.matches(password, loginMember.getPassword())) {
             throw new BaseException(WRONG_PASSWORD);
         }
 

@@ -27,7 +27,6 @@ public class MemberController {
     @PostMapping("/members/new")
     public String create(@Valid MemberForm form, BindingResult result) {
         if(result.hasErrors()) {
-            log.info("errors={}", result);
             return "members/createMemberForm";
         }
 
@@ -39,6 +38,23 @@ public class MemberController {
                 .build();
 
         memberService.join(member);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/members/login")
+    public String loginForm(Model model) {
+        model.addAttribute("loginForm", new LoginForm());
+        return "members/loginForm";
+    }
+
+    @PostMapping("/members/login")
+    public String login(@Valid LoginForm form, BindingResult result) {
+        if(result.hasErrors()) {
+            return "members/loginForm";
+        }
+
+        memberService.login(form.getLoginId(), form.getPassword());
 
         return "redirect:/";
     }

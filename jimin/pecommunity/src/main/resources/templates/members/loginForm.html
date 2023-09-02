@@ -19,7 +19,7 @@
         <h2>로그인</h2>
     </div>
 
-    <form action="item.html" th:action th:object="${loginForm}" method="post">
+    <form th:action="@{/members/login}" th:object="${loginForm}" method="post">
         <div class="form-group">
             <label th:for="loginId">로그인 ID</label>
             <input type="text" th:field="*{loginId}" class="form-control" placeholder="아이디를 입력하세요"

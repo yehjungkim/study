@@ -12,7 +12,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Table
@@ -38,7 +37,7 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Authority authority; // 권한
+    private Role role; // 권한
 
     private LocalDateTime dormantConversionDate;
 
@@ -48,7 +47,7 @@ public class Member {
         this.nickname = nickname;
         this.password = password;
         this.email = email;
-        this.authority = Authority.MEMBER;
+        this.role = Role.MEMBER;
     }
 
     /**

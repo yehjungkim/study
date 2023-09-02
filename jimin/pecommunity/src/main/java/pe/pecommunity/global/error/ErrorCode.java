@@ -11,6 +11,7 @@ public enum ErrorCode {
     EMAIL_ALREADY_EXIST("이미 존재하는 이메일입니다."),
 
     MEMBER_ID_NOT_EXIST("존재하지 않는 아이디입니다."),
+    NICKNAME_NOT_EXIST("존재하지 않는 닉네임입니다."),
     WRONG_PASSWORD("틀린 비밀번호입니다."),
 
 

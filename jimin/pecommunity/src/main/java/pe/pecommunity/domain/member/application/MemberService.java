@@ -4,6 +4,7 @@ import static pe.pecommunity.global.error.ErrorCode.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.pecommunity.domain.member.dao.MemberRepository;
@@ -19,6 +20,7 @@ import pe.pecommunity.global.error.exception.BaseException;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 회원 가입
@@ -35,6 +37,9 @@ public class MemberService {
             throw new BaseException(EMAIL_ALREADY_EXIST);
         }
 
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        member.changePasswordBcrypt(encodedPassword); // 비밀번호 암호화
+
         memberRepository.save(member);
         return member.getId();
     }
@@ -46,7 +51,7 @@ public class MemberService {
         Member loginMember = memberRepository.findByMemberId(member.getMemberId())
                 .orElseThrow(() -> new BaseException(MEMBER_ID_NOT_EXIST));
 
-        if(!loginMember.getPassword().equals(member.getPassword())) {
+        if(!passwordEncoder.matches(member.getPassword(), loginMember.getPassword())) {
             throw new BaseException(WRONG_PASSWORD);
         }
 

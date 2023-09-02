@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Table
@@ -48,6 +49,13 @@ public class Member {
         this.password = password;
         this.email = email;
         this.authority = Authority.MEMBER;
+    }
+
+    /**
+     * 비밀번호 encode
+     */
+    public void changePasswordBcrypt(String encodedPassword){
+        this.password = encodedPassword;
     }
 
 }

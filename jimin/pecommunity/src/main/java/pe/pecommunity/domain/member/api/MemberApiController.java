@@ -32,7 +32,7 @@ public class MemberApiController {
     @Operation(summary = "회원 가입", description = "회원을 등록하는 api")
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    private ApiResponse<?> signIn(@RequestBody @Valid SignInRequestDto request) {
+    private ApiResponse<?> signUp(@RequestBody @Valid SignInRequestDto request) {
         memberService.join(request.toEntity());
         return ResponseUtils.success("회원가입 성공");
     }
@@ -49,7 +49,7 @@ public class MemberApiController {
     @Operation(summary = "로그인 요청", description = "회원 로그인 요청하는 api")
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    private ApiResponse<?> login(@RequestBody @Valid LoginRequestDto request) {
+    private ApiResponse<?> singIn(@RequestBody @Valid LoginRequestDto request) {
         memberService.login(request);
         return ResponseUtils.success("로그인 성공");
     }

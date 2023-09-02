@@ -1,4 +1,4 @@
-package Common;
+package common;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @ToString
-public enum ErrorEnum {
+public enum ApiErrorEnum {
     // 클라이언트 에러
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "CE400"),
     Forbidden(HttpStatus.FORBIDDEN, "CE403"),
@@ -18,12 +18,12 @@ public enum ErrorEnum {
     private String message;
     private final String code;
 
-    ErrorEnum(HttpStatus status, String code) {
+    ApiErrorEnum(HttpStatus status, String code) {
         this.status = status;
         this.code = code;
     }
 
-    ErrorEnum(HttpStatus status, String code, String message) {
+    ApiErrorEnum(HttpStatus status, String code, String message) {
         this.status = status;
         this.code = code;
         this.message = message;

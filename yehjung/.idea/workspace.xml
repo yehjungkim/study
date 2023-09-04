@@ -8,6 +8,14 @@
       <change afterPath="$PROJECT_DIR$/study/yehjung/src/main/java/physical/education/yehjung/Member/controller/MemberController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/study/yehjung/src/main/java/physical/education/yehjung/Member/dto/Authority.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/study/yehjung/src/main/java/physical/education/yehjung/Member/repository/MemberRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/study/yehjung/src/security/main/java/com/example/SpringSecurityApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/study/yehjung/src/security/main/java/com/example/config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/study/yehjung/src/security/main/java/com/example/config/WebMvcConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/study/yehjung/src/security/main/java/com/example/controller/IndexController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/study/yehjung/src/security/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/study/yehjung/src/security/main/resources/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/study/yehjung/src/security/main/resources/templates/join.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/study/yehjung/src/security/main/resources/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/study" beforeDir="false" afterPath="$PROJECT_DIR$/study" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/study/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/study/README.md" afterDir="false" />
@@ -64,7 +72,7 @@
     </system>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/study" />
     <option name="ROOT_SYNC" value="SYNC" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -79,17 +87,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;android.gradle.sync.needed&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/yehjung/IdeaProjects/yehjung/study/yehjung&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "android.gradle.sync.needed": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/yehjung/IdeaProjects/yehjung/study/yehjung/src/security"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\yehjung\IdeaProjects\yehjung\study\yehjung\src\security" />
       <recent name="C:\Users\yehjung\IdeaProjects\yehjung\study\yehjung" />
     </key>
   </component>

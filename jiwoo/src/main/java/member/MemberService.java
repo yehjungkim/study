@@ -1,6 +1,4 @@
-package Member;
-
-import org.springframework.stereotype.Service;
+package member;
 
 public interface MemberService {
 

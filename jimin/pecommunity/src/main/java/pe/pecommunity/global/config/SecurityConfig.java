@@ -28,35 +28,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         /**
          * Form 로그인
          */
-        http.authorizeRequests()
-            .antMatchers("/", "/members/new", "/members/login", "/resources/**").permitAll()
-            .antMatchers("/login-test").hasRole(Role.ADMIN.name())
-//            .antMatchers("/loginHome").authenticated()
-//            .antMatchers("/members/**").authenticated()
-            .antMatchers("/admin/**").hasRole("ADMIN") // 관리자만 접근 가능
-        .and()
-            .formLogin()
-            .loginPage("/members/login") // 로그인 페이지
-            .loginProcessingUrl("/members/login") // 로그인 요청 URI 매핑
-            .usernameParameter("loginId")
-            .passwordParameter("password")
-            .defaultSuccessUrl("/loginHome", true) // 로그인 성공 시, 리다이렉트
-            .failureUrl("/");
-
-        http.logout().logoutUrl("/members/logout").logoutSuccessUrl("/"); // 로그아웃
-
-        http.userDetailsService(userDetailsService);
+//        http.authorizeRequests()
+//            .antMatchers("/", "/member/**", "/members/new", "/members/login", "/resources/**").permitAll()
+//            .antMatchers("/login-test").hasRole(Role.ADMIN.name())
+////            .antMatchers("/loginHome").authenticated()
+////            .antMatchers("/members/**").authenticated()
+//            .antMatchers("/admin/**").hasRole("ADMIN") // 관리자만 접근 가능
+//        .and()
+//            .formLogin()
+//            .loginPage("/members/login") // 로그인 페이지
+//            .loginProcessingUrl("/members/login") // 로그인 요청 URI 매핑
+//            .usernameParameter("loginId")
+//            .passwordParameter("password")
+//            .defaultSuccessUrl("/loginHome", true) // 로그인 성공 시, 리다이렉트
+//            .failureUrl("/");
+//
+//        http.logout().logoutUrl("/members/logout").logoutSuccessUrl("/"); // 로그아웃
+//
+//        http.userDetailsService(userDetailsService);
 
 
         /**
          * REST API - JWT 추가
          */
-//        http
-//            .httpBasic().disable() // 기본설정 미사용
-//            .csrf().disable() // csrf 보안 미사용
-//            .formLogin().disable()
+        http
+            .httpBasic().disable() // 기본설정 미사용
+            .csrf().disable() // csrf 보안 미사용
+            .formLogin().disable()
+                .authorizeRequests()
+                .anyRequest().permitAll();
 //            .authorizeRequests()
-//                .antMatchers("/", "member/join/**", "/member/login").permitAll()
+//                .antMatchers("/", "member/**").permitAll()
 //                .antMatchers("/post/**").authenticated()
 //                .anyRequest().authenticated();
     }

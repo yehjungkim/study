@@ -1,17 +1,21 @@
 package pe.pecommunity.domain.member.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pe.pecommunity.domain.post.domain.Post;
 
 @Entity
 @Table
@@ -22,6 +26,9 @@ public class Member {
     @Id @GeneratedValue
     @Column(name = "member_pk")
     private Long id;
+
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts = new ArrayList<>();
 
     @Column(unique = true, nullable = false)
     private String memberId;
@@ -56,5 +63,7 @@ public class Member {
     public void changePasswordBcrypt(String encodedPassword){
         this.password = encodedPassword;
     }
+
+
 
 }

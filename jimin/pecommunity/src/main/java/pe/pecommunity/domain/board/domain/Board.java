@@ -1,5 +1,6 @@
 package pe.pecommunity.domain.board.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -26,6 +27,7 @@ public class Board {
     @Column(name = "board_cd_pk")
     private Long id;
 
+//    @JsonIgnore
     @OneToMany(mappedBy = "board")
     private List<Post> posts = new ArrayList<>();
 

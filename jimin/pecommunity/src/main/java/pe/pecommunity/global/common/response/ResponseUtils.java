@@ -1,5 +1,7 @@
 package pe.pecommunity.global.common.response;
 
+import java.util.HashMap;
+import java.util.Map;
 import pe.pecommunity.global.error.ErrorCode;
 
 public class ResponseUtils {
@@ -16,6 +18,12 @@ public class ResponseUtils {
     }
 
     public static <T>ApiResponse<T> success (T data, String message) {
+        return new ApiResponse(ResponseStatus.SUCCESS, data, message);
+    }
+
+    public static <T>ApiResponse<T> successAsJson (String key, T object, String message) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(key, object);
         return new ApiResponse(ResponseStatus.SUCCESS, data, message);
     }
 

@@ -1,5 +1,6 @@
 package pe.pecommunity.domain.member.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Member {
     @Column(name = "member_pk")
     private Long id;
 
+//    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
 

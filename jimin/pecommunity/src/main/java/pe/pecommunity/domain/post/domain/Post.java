@@ -1,5 +1,7 @@
 package pe.pecommunity.domain.post.domain;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,4 +60,5 @@ public class Post {
         board.getPosts().add(this);
         member.getPosts().add(this);
     }
+
 }

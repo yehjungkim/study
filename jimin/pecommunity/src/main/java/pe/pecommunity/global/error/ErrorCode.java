@@ -20,6 +20,10 @@ public enum ErrorCode {
     BOARD_NOT_EXIST("존재하지 않는 게시판입니다."),
 
 
+    //post
+    POST_NOT_EXIST("존재하지 않는 게시글입니다."),
+
+
     INVALID_TYPE_VALUE("유효하지 않은 데이터 값입니다."),
     NOT_FOUND_ERROR("잘못된 주소 요청입니다."),
     INTERNAL_SERVER_ERROR("서버 에러입니다.");

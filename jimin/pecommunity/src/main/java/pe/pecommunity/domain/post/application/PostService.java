@@ -2,6 +2,7 @@ package pe.pecommunity.domain.post.application;
 
 import static pe.pecommunity.global.error.ErrorCode.BOARD_NOT_EXIST;
 import static pe.pecommunity.global.error.ErrorCode.MEMBER_NOT_EXIST;
+import static pe.pecommunity.global.error.ErrorCode.POST_NOT_EXIST;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import pe.pecommunity.domain.member.dao.MemberRepository;
 import pe.pecommunity.domain.member.domain.Member;
 import pe.pecommunity.domain.post.dao.PostRepository;
 import pe.pecommunity.domain.post.domain.Post;
+import pe.pecommunity.domain.post.dto.PostDto;
 import pe.pecommunity.domain.post.dto.PostRequestDto;
 import pe.pecommunity.global.error.exception.BaseException;
 
@@ -49,5 +51,14 @@ public class PostService {
         postRepository.save(post);
 
         return post.getId();
+    }
+
+    /**
+     * 게시글 조회
+     */
+    public PostDto findOne(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new BaseException(POST_NOT_EXIST));
+        return PostDto.of(post);
     }
 }

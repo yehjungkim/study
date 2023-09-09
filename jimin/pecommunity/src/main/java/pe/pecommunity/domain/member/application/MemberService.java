@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.pecommunity.domain.member.dao.MemberRepository;
 import pe.pecommunity.domain.member.domain.Member;
-import pe.pecommunity.domain.member.dto.LoginRequestDto;
 import pe.pecommunity.global.error.exception.BaseException;
 
 
@@ -29,11 +28,11 @@ public class MemberService {
     public Long join(Member member) {
         checkMemberId(member.getMemberId());
 
-        if(memberRepository.findByMemberId(member.getNickname()).isPresent()) {
+        if(memberRepository.findByNickname(member.getNickname()).isPresent()) {
             throw new BaseException(NICKNAME_ALREADY_EXIST);
         }
 
-        if(memberRepository.findByMemberId(member.getEmail()).isPresent()) {
+        if(memberRepository.findByEmail(member.getEmail()).isPresent()) {
             throw new BaseException(EMAIL_ALREADY_EXIST);
         }
 

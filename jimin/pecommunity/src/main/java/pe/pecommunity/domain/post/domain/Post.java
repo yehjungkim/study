@@ -9,14 +9,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import pe.pecommunity.domain.board.domain.Board;
 import pe.pecommunity.domain.member.domain.Member;
 
 @Entity
 @Table
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post {
 
     @Id @GeneratedValue
@@ -47,6 +50,7 @@ public class Post {
         this.member = member;
         this.title = title;
         this.content = content;
+        this.viewCnt = 0L;
         this.createDate = LocalDateTime.now();
         this.updateDate = LocalDateTime.now();
 

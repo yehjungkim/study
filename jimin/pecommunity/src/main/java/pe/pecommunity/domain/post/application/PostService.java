@@ -1,5 +1,8 @@
 package pe.pecommunity.domain.post.application;
 
+import static pe.pecommunity.global.error.ErrorCode.BOARD_NOT_EXIST;
+import static pe.pecommunity.global.error.ErrorCode.MEMBER_NOT_EXIST;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,8 @@ import pe.pecommunity.domain.member.dao.MemberRepository;
 import pe.pecommunity.domain.member.domain.Member;
 import pe.pecommunity.domain.post.dao.PostRepository;
 import pe.pecommunity.domain.post.domain.Post;
+import pe.pecommunity.domain.post.dto.PostRequestDto;
+import pe.pecommunity.global.error.exception.BaseException;
 
 @Slf4j
 @Service
@@ -25,18 +30,20 @@ public class PostService {
      * 게시글 등록
      */
     @Transactional
-    public Long resister(Long memberId, Long boardId, String title, String content) {
+    public Long resister(PostRequestDto postRequest) {
 
         // 엔티티 조회
-        Member member = memberRepository.findOne(memberId);
-        Board board = boardRepository.findOne(boardId);
+        Member member = memberRepository.findById(postRequest.getMemberId())
+                .orElseThrow(() -> new BaseException(MEMBER_NOT_EXIST));
+        Board board = boardRepository.findById(postRequest.getBoardId())
+                .orElseThrow(() -> new BaseException(BOARD_NOT_EXIST));
 
         // 게시글 생성
         Post post = Post.createPostBuilder()
+                .title(postRequest.getTitle())
+                .content(postRequest.getContent())
                 .member(member)
                 .board(board)
-                .title(title)
-                .content(content)
                 .build();
 
         postRepository.save(post);

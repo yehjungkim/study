@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,9 +41,21 @@ public class PostApiController {
     }
 
     /**
+     * 게시글 수정
+     */
+    @PatchMapping("/{postId}/update")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<?> update(@PathVariable Long postId, @RequestBody @Valid PostRequestDto request) {
+        postService.update(postId, request);
+        return ResponseUtils.success("게시글 수정 성공");
+    }
+
+
+    /**
      * 게시글 조회
      */
     @GetMapping("/{postId}")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<?> getPost(@PathVariable Long postId) {
         PostDto post = postService.findOne(postId);
         return ResponseUtils.successAsJson("post", post, "게시글 조회 성공");

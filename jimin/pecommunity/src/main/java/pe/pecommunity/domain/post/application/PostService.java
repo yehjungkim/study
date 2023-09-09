@@ -53,6 +53,14 @@ public class PostService {
         return post.getId();
     }
 
+    @Transactional
+    public Long update(Long postId, PostRequestDto postRequest) {
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(() -> new BaseException(POST_NOT_EXIST));
+        findPost.update(postRequest.getTitle(), postRequest.getContent());
+        return findPost.getId();
+    }
+
     /**
      * 게시글 조회
      */

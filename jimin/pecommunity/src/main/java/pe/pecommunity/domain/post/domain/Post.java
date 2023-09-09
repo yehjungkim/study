@@ -61,4 +61,10 @@ public class Post {
         member.getPosts().add(this);
     }
 
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+        this.updateDate = LocalDateTime.now();
+    }
+
 }

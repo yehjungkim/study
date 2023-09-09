@@ -61,6 +61,11 @@ public class PostService {
         return findPost.getId();
     }
 
+    @Transactional
+    public void delete(Long postId) {
+        postRepository.deleteById(postId);
+    }
+
     /**
      * 게시글 조회
      */

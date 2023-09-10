@@ -4,11 +4,17 @@ import static pe.pecommunity.global.error.ErrorCode.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.pecommunity.domain.member.dao.MemberRepository;
 import pe.pecommunity.domain.member.domain.Member;
+import pe.pecommunity.domain.member.dto.LoginResponseDto;
+import pe.pecommunity.global.config.jwt.TokenProvider;
 import pe.pecommunity.global.error.exception.BaseException;
 
 
@@ -20,6 +26,10 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final TokenProvider tokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+
 
     /**
      * 회원 가입
@@ -46,7 +56,7 @@ public class MemberService {
     /**
      * 로그인
      */
-    public Long login(String memberId, String password) {
+    public LoginResponseDto login(String memberId, String password) {
         Member loginMember = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new BaseException(MEMBER_ID_NOT_EXIST));
 
@@ -54,7 +64,21 @@ public class MemberService {
             throw new BaseException(WRONG_PASSWORD);
         }
 
-        return loginMember.getId();
+        String accessToken =  authorize(memberId, password);
+
+        return LoginResponseDto.builder().accessToken(accessToken).build();
+    }
+
+    public String authorize(String memberId, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(memberId, password);
+
+        // CustomUserDetailsService에서 재정의한 loadUserByUsername 메서드 호출
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // 인증 정보를 기준으로 jwt access 토큰 생성
+        return tokenProvider.createToken(authentication);
     }
 
     /**

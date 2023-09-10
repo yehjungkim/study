@@ -20,11 +20,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
-        Member findMember = memberRepository.findByMemberId(memberId)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Member findMember = memberRepository.findByMemberId(username)
                 .orElseThrow(() -> new BaseException(NICKNAME_NOT_EXIST));
 
-        log.info("loadUserByUsername member.memberId = {}", memberId);
+        log.info("loadUserByUsername member.memberId = {}", username);
 
         return new SecurityUser(findMember);
     }

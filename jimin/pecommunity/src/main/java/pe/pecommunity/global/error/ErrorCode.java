@@ -16,6 +16,9 @@ public enum ErrorCode {
 
     MEMBER_NOT_EXIST("존재하지 않는 회원입니다."),
 
+    NOT_AUTHORIZED("해당 권한이 없습니다."),
+    NOT_LOGIN("로그인 되어있지 않습니다."),
+
     //board
     BOARD_NOT_EXIST("존재하지 않는 게시판입니다."),
 

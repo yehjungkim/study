@@ -2,6 +2,8 @@ package pe.pecommunity.domain.post.application;
 
 import static pe.pecommunity.global.error.ErrorCode.BOARD_NOT_EXIST;
 import static pe.pecommunity.global.error.ErrorCode.MEMBER_NOT_EXIST;
+import static pe.pecommunity.global.error.ErrorCode.NOT_AUTHORIZED;
+import static pe.pecommunity.global.error.ErrorCode.NOT_LOGIN;
 import static pe.pecommunity.global.error.ErrorCode.POST_NOT_EXIST;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import pe.pecommunity.domain.post.domain.Post;
 import pe.pecommunity.domain.post.dto.PostDto;
 import pe.pecommunity.domain.post.dto.PostRequestDto;
 import pe.pecommunity.global.error.exception.BaseException;
+import pe.pecommunity.global.util.SecurityUtil;
 
 @Slf4j
 @Service
@@ -57,12 +60,20 @@ public class PostService {
     public Long update(Long postId, PostRequestDto postRequest) {
         Post findPost = postRepository.findById(postId)
                 .orElseThrow(() -> new BaseException(POST_NOT_EXIST));
+
+        checkAuthorizedMember(findPost.getMember().getMemberId());
+
         findPost.update(postRequest.getTitle(), postRequest.getContent());
         return findPost.getId();
     }
 
     @Transactional
     public void delete(Long postId) {
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(() -> new BaseException(POST_NOT_EXIST));
+
+        checkAuthorizedMember(findPost.getMember().getMemberId());
+
         postRepository.deleteById(postId);
     }
 
@@ -73,5 +84,10 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BaseException(POST_NOT_EXIST));
         return PostDto.of(post);
+    }
+
+    public void checkAuthorizedMember(String memberId) {
+        String loginId = SecurityUtil.getCurrentMemberId().orElseThrow(() -> new BaseException(NOT_LOGIN));
+        if(!memberId.equals(loginId)) throw new BaseException(NOT_AUTHORIZED);
     }
 }

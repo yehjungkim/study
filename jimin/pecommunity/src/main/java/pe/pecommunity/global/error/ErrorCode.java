@@ -24,6 +24,13 @@ public enum ErrorCode {
     POST_NOT_EXIST("존재하지 않는 게시글입니다."),
 
 
+    // jwt token
+    TOKEN_EXPIRED_EXCEPTION("만료된 JWT 토큰입니다."),
+    TOKEN_UNSUPPORTED_EXCEPTION("지원되지 않는 JWT 토큰입니다."),
+    TOKEN_WRONG_EXCEPTION("잘못된 JWT 토큰 서명입니다."),
+    TOKEN_NOT_EXIST("토큰이 존재하지 않습니다."),
+
+
     INVALID_TYPE_VALUE("유효하지 않은 데이터 값입니다."),
     NOT_FOUND_ERROR("잘못된 주소 요청입니다."),
     INTERNAL_SERVER_ERROR("서버 에러입니다.");

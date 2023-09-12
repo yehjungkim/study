@@ -12,9 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pe.pecommunity.global.config.jwt.CustomJwtFilter;
 import pe.pecommunity.global.config.jwt.JwtAccessDeniedHandler;
 import pe.pecommunity.global.config.jwt.JwtAuthenticationEntryPoint;
-import pe.pecommunity.global.config.jwt.JwtSecurityConfig;
 import pe.pecommunity.global.config.jwt.TokenProvider;
 import pe.pecommunity.global.config.security.CustomUserDetailsService;
 
@@ -81,10 +82,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticationEntryPoint(jwtAuthenticationEntryPoint) // 인증 실패 핸들링
             .accessDeniedHandler(jwtAccessDeniedHandler) // 인가 실패 핸들링
 
-        .and()
-            .headers()
-            .frameOptions()
-            .sameOrigin()
+//        .and()
+//            .headers()
+//            .frameOptions()
+//            .sameOrigin()
 
         // 세션을 사용 x -> STATELESS로 설정
         .and()
@@ -94,11 +95,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // api 경로
         .and()
             .authorizeRequests()
-                .antMatchers("/api/authenticate", "/member/join", "/member/login").permitAll()
+                .antMatchers("/member/join", "/member/login").permitAll()
                 .anyRequest().authenticated() // 나머지 경로는 jwt 인증
 
+        // JwtFilter 추가
         .and()
-            .apply(new JwtSecurityConfig(tokenProvider));
+            .addFilterBefore(new CustomJwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 
     }
 }

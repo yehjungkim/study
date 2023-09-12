@@ -70,10 +70,11 @@ public class MemberService {
     }
 
     public String authorize(String memberId, String password) {
+        // 1. ID/PW 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(memberId, password);
 
-        // CustomUserDetailsService에서 재정의한 loadUserByUsername 메서드 호출
+        // 2. 실제 검증 로직 - CustomUserDetailsService에서 재정의한 loadUserByUsername 메서드 호출
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

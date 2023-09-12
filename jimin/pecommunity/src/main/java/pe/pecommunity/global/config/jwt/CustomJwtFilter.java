@@ -17,37 +17,32 @@ import org.springframework.web.filter.GenericFilterBean;
 @RequiredArgsConstructor
 public class CustomJwtFilter extends GenericFilterBean {
 
-    public static final String AUTHORIZATION_HEADER = "Authorization";
     private final TokenProvider tokenProvider;
 
+    /**
+     * JWT
+     * 1. 사용자의 request Header에서 토큰을 가져옴
+     * 2. Token의 유효성 검사를 실시
+     * 3. 유효하면 Authentication 인증객체 생성
+     * 4. SecurityContext에 저장
+     * 5. 해당 Filter 과정이 끝나면 시큐리티에서 다음 Filter로 이동함
+     */
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String jwt = resolveToken(httpServletRequest);
-        String requestURI = httpServletRequest.getRequestURI();
+        String token = tokenProvider.resolveToken((HttpServletRequest) request);
 
         // 유효성 검증
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            Authentication authentication = tokenProvider.getAuthentication(jwt);
+        if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
+            Authentication authentication = tokenProvider.getAuthentication(token);
+            // SecurityContext에 Authentication 객체(토큰 인증과정 결과)를 저장
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
+            log.debug("Security Context에 '{}' 인증 정보를 저장했습니다", authentication.getName());
         } else {
-            log.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
+            log.debug("유효한 JWT 토큰이 없습니다");
         }
 
-        filterChain.doFilter(servletRequest, servletResponse);
-    }
-
-    // 헤더에서 토큰 정보를 꺼내옴
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-
-        return null;
+        chain.doFilter(request, response);
     }
 }

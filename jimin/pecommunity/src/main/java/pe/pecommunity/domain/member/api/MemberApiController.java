@@ -22,7 +22,6 @@ import pe.pecommunity.domain.member.dto.LoginResponseDto;
 import pe.pecommunity.domain.member.dto.SignUpRequestDto;
 import pe.pecommunity.global.common.response.ApiResponse;
 import pe.pecommunity.global.common.response.ResponseUtils;
-import pe.pecommunity.global.config.jwt.CustomJwtFilter;
 
 @Slf4j
 @Tag(name = "Member", description = "회원 API")
@@ -30,6 +29,9 @@ import pe.pecommunity.global.config.jwt.CustomJwtFilter;
 @RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberApiController {
+
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String BEARER_TYPE = "Bearer ";
 
     private final MemberService memberService;
 
@@ -57,7 +59,7 @@ public class MemberApiController {
 
         // response header 토큰 넣음
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(CustomJwtFilter.AUTHORIZATION_HEADER, "Bearer " + responseDto.getAccessToken());
+        httpHeaders.add(AUTHORIZATION_HEADER, BEARER_TYPE + responseDto.getAccessToken());
 
         // 응답 객체에도 토큰 넣음
         ApiResponse<LoginResponseDto> responseBody = ResponseUtils.successAsJson("member", responseDto, "로그인 성공");

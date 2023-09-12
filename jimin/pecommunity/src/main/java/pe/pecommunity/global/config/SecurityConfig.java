@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pe.pecommunity.global.config.jwt.CustomJwtFilter;
+import pe.pecommunity.global.config.jwt.ExceptionHandlerFilter;
 import pe.pecommunity.global.config.jwt.JwtAccessDeniedHandler;
 import pe.pecommunity.global.config.jwt.JwtAuthenticationEntryPoint;
 import pe.pecommunity.global.config.jwt.TokenProvider;
@@ -100,7 +101,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // JwtFilter 추가
         .and()
-            .addFilterBefore(new CustomJwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new CustomJwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new ExceptionHandlerFilter(), CustomJwtFilter.class);
 
     }
 }

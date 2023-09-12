@@ -1,6 +1,7 @@
 package pe.pecommunity.global.config.jwt;
 
 import static pe.pecommunity.global.error.ErrorCode.TOKEN_EXPIRED_EXCEPTION;
+import static pe.pecommunity.global.error.ErrorCode.TOKEN_INVALID_EXCEPTION;
 import static pe.pecommunity.global.error.ErrorCode.TOKEN_UNSUPPORTED_EXCEPTION;
 import static pe.pecommunity.global.error.ErrorCode.TOKEN_WRONG_EXCEPTION;
 
@@ -89,6 +90,7 @@ public class TokenProvider implements InitializingBean { // 토큰 생성 및 �
     }
 
     /**
+     * 토큰에 저장한 유저 식별값(memberId)을 추출
      * 토큰을 받아 Claims을 만들고 권한정보로 시큐리티 유저객체를 만들어 Authentication 객체 반환
      */
     public Authentication getAuthentication(String token) {
@@ -123,15 +125,14 @@ public class TokenProvider implements InitializingBean { // 토큰 생성 및 �
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info(TOKEN_WRONG_EXCEPTION.getMessage());
+            throw new JwtException(TOKEN_WRONG_EXCEPTION.getMessage());
         } catch (ExpiredJwtException e) {
-            log.info(TOKEN_EXPIRED_EXCEPTION.getMessage());
+            throw new JwtException(TOKEN_EXPIRED_EXCEPTION.getMessage());
         } catch (UnsupportedJwtException e) {
-            log.info(TOKEN_UNSUPPORTED_EXCEPTION.getMessage());
+            throw new JwtException(TOKEN_UNSUPPORTED_EXCEPTION.getMessage());
         } catch (IllegalArgumentException e) {
-            log.info(TOKEN_WRONG_EXCEPTION.getMessage());
+            throw new JwtException(TOKEN_INVALID_EXCEPTION.getMessage());
         }
-        return false;
     }
 
 }

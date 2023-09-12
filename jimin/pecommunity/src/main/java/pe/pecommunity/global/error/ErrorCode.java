@@ -31,6 +31,7 @@ public enum ErrorCode {
     TOKEN_EXPIRED_EXCEPTION("만료된 JWT 토큰입니다."),
     TOKEN_UNSUPPORTED_EXCEPTION("지원되지 않는 JWT 토큰입니다."),
     TOKEN_WRONG_EXCEPTION("잘못된 JWT 토큰 서명입니다."),
+    TOKEN_INVALID_EXCEPTION("유효하지 않은 토큰입니다."),
     TOKEN_NOT_EXIST("토큰이 존재하지 않습니다."),
 
 

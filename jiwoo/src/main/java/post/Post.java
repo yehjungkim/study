@@ -1,6 +1,7 @@
 package post;
 
 import board.Board;
+import lombok.Builder;
 import lombok.Getter;
 import member.Member;
 
@@ -47,4 +48,12 @@ public class Post {
 
     @Column(name = "VIEW_CNT", nullable = false)
     private int view_cnt;
+
+    @Builder
+    public Post(String title, Date create_ymd, Date update_ymd, String content) {
+        this.title = title;
+        this.content = content;
+        this.create_ymd = create_ymd;
+        this.update_ymd = update_ymd;
+    }
 }

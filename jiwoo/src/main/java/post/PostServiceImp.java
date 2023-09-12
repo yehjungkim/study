@@ -1,5 +1,6 @@
 package post;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,5 +22,10 @@ public class PostServiceImp implements PostService {
                 .create_ymd(LocalDateTime.now())
                 .build();
         postRepository.save(createPost);
+    }
+
+    @Override
+    public void deletePost(long post_pk) {
+        postRepository.deleteById(post_pk);
     }
 }

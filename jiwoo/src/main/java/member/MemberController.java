@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import session.SessionConst;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,13 +33,7 @@ public class MemberController {
         return "hmoe"; // 메인 페이지로 이동
     }
     @GetMapping("/")
-    public String homeByLogin(HttpServletRequest request, Model model) {
-
-        HttpSession session = request.getSession(false);
-        if(session==null) {
-            return "home";
-        }
-        Member loginMember = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
+    public String homeByLogin(@SessionAttribute(name=SessionConst.LOGIN_MEMBER, required = false) Member loginMember, Model model) {
 
         if(loginMember==null) {
             return "home";

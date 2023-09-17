@@ -1,9 +1,12 @@
 package post;
 
 import board.Board;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import member.Member;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,18 +16,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name="POST")
 @Getter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="POST_PK")
-    private int post_pk;
+    private long post_pk;
 
     @ManyToOne
     @JoinColumn(name="SPORTS_CD_FK")
@@ -37,23 +41,21 @@ public class Post {
     @Column(name = "TITLE", nullable = false, length = 50)
     private String title;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date create_ymd;
+    private LocalDateTime create_ymd;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date update_ymd;
+    private LocalDateTime update_ymd;
 
     @Column(name = "CONTENT", nullable = false)
     private String content;
 
     @Column(name = "VIEW_CNT", nullable = false)
+    @ColumnDefault("0")
     private int view_cnt;
 
     @Builder
-    public Post(String title, Date create_ymd, Date update_ymd, String content) {
+    public Post(String title, LocalDateTime create_ymd, String content) {
         this.title = title;
         this.content = content;
         this.create_ymd = create_ymd;
-        this.update_ymd = update_ymd;
     }
 }

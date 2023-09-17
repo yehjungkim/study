@@ -16,7 +16,7 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private int board_cd_pk;
+    private long board_cd_pk;
     @Column
     private Sports sports_nm;
     @Column

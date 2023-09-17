@@ -1,8 +1,12 @@
 package post;
 
+import member.Member;
+
 public interface PostService {
 
     void enrollPost(ValidatePostRequestDto validatePostRequestDto);
 
-    void deletePost(long post_pk);
+    String deletePost(long post_pk, Member member);
+
+    void updatePost(long post_pk, ValidatePostRequestDto validatePostRequestDto, Member member);
 }

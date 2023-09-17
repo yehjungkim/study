@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -21,7 +23,7 @@ public class LoginController {
     private final MemberService memberService;
 
     @PostMapping("/login")
-    public String login(@Valid LoginRequestDto loginRequestDto, BindingResult bindingResult) {
+    public String login(@Valid LoginRequestDto loginRequestDto, BindingResult bindingResult, HttpServletResponse response) {
         if(bindingResult.hasErrors()) {
             return "fail"; //로그인 페이지로 이동
         }
@@ -31,6 +33,9 @@ public class LoginController {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호를 잘못 입력하였습니다.");
             return "fail"; //로그인 페이지로 이동
         }
-        return "success";
+
+        Cookie loginCookieId = new Cookie("loginCookieId", String.valueOf(loginMember.getMember_pk()));
+        response.addCookie(loginCookieId);
+        return "redirect:/";
     }
 }

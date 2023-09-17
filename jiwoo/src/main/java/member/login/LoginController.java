@@ -1,7 +1,6 @@
 package member.login;
 
 import lombok.RequiredArgsConstructor;
-import member.LoginRequestDto;
 import member.Member;
 import member.MemberRepository;
 import member.MemberService;
@@ -9,9 +8,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import session.SessionConst;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
@@ -23,7 +25,7 @@ public class LoginController {
     private final MemberService memberService;
 
     @PostMapping("/login")
-    public String login(@Valid LoginRequestDto loginRequestDto, BindingResult bindingResult, HttpServletResponse response) {
+    public String login(@Valid LoginRequestDto loginRequestDto, BindingResult bindingResult, HttpServletRequest request) {
         if(bindingResult.hasErrors()) {
             return "fail"; //로그인 페이지로 이동
         }
@@ -34,8 +36,17 @@ public class LoginController {
             return "fail"; //로그인 페이지로 이동
         }
 
-        Cookie loginCookieId = new Cookie("loginCookieId", String.valueOf(loginMember.getMember_pk()));
-        response.addCookie(loginCookieId);
+        HttpSession session = request.getSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+        return "redirect:/"; //로그인 된 홈페이지로 가야함
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if(session!=null) {
+            session.invalidate();
+        }
         return "redirect:/";
     }
 }

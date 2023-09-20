@@ -1,4 +1,4 @@
-package member;
+package member.login;
 
 import lombok.Data;
 
